@@ -56,7 +56,8 @@ export class UserService {
       throw new BadRequestException('Invalid username or password');
     }
     const { token, nowTime, expireTime } = await this.genSessionToken(user);
-    return { user, token, nowTime, expireTime };
+    const userName = user.username;
+    return { userName, token, nowTime, expireTime };
   }
 
   async genSessionToken(user: User) {

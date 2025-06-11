@@ -27,11 +27,11 @@ export class AppController {
 
   @Post('api/login')
   async loginUser(@Body() loginData: LoginDto) {
-    const { user, token, nowTime, expireTime } =
+    const { userName, token, nowTime, expireTime } =
       await this.userService.login(loginData);
     return {
-      message: `User ${user.username} login successfully!`,
-      username: user.username,
+      message: `User ${userName} login successfully!`,
+      userName,
       token,
       nowTime,
       expireTime,
