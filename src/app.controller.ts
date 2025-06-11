@@ -1,0 +1,39 @@
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { AppService, UserService } from './app.service';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+
+@Controller()
+export class AppController {
+  constructor(
+    private readonly appService: AppService,
+    private readonly userService: UserService,
+  ) {}
+
+  @Get()
+  welcome(): string {
+    return 'howzit my friend! Welcome to the NestJS application!';
+  }
+
+  @Post('api/register')
+  async registerUser(@Body() userData: RegisterDto) {
+    const user = await this.userService.register(userData);
+    return {
+      message: `User ${user.username} registered successfully!`,
+      id: user.id,
+    };
+  }
+
+  @Post('api/login')
+  async loginUser(@Body() loginData: LoginDto) {
+    const { user, token, nowTime, expireTime } =
+      await this.userService.login(loginData);
+    return {
+      message: `User ${user.username} login successfully!`,
+      username: user.username,
+      token,
+      nowTime,
+      expireTime,
+    };
+  }
+}
