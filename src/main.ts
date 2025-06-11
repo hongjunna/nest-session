@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { BotDetactionGuard } from './guard/bot.guard';
+import { BotDetectionGuard } from './guard/bot.guard';
 
 async function bootstrap() {
   const port = process.env.PORT || 3000;
@@ -13,7 +13,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  app.useGlobalGuards(new BotDetactionGuard());
+  app.useGlobalGuards(new BotDetectionGuard());
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }

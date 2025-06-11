@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 
 @Injectable()
-export class BotDetactionGuard implements CanActivate {
-  private readonly logger: Logger = new Logger(BotDetactionGuard.name);
+export class BotDetectionGuard implements CanActivate {
+  private readonly logger: Logger = new Logger(BotDetectionGuard.name);
   constructor() {}
   canActivate(context: ExecutionContext): boolean {
     const requestHeader = context.switchToHttp().getRequest();
@@ -35,6 +35,9 @@ export class BotDetactionGuard implements CanActivate {
       );
       this.throwManyRequestsException();
     }
+    this.logger.log(
+      `[BotDetection] Bot check passed with score : ${headerScore}`,
+    );
     return true;
   }
 
