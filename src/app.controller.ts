@@ -1,7 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AppService, UserService } from './app.service';
+import { AppService } from './app.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { UserService } from './user.service';
 
 @Controller()
 export class AppController {

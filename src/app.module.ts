@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
-import { AppService, UserService } from './app.service';
+import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { InitService } from './init.service';
 import { User } from './entities/user.entity';
 import { RedisService } from './redis/redis.service';
+import { UserService } from './user.service';
 
 @Module({
   imports: [
