@@ -40,7 +40,7 @@ export class UserService {
     }
   }
 
-  async hashPassword(password: string): Promise<string> {
+  private async hashPassword(password: string): Promise<string> {
     const hashedPassword = await bcrypt.hash(password, 10);
     return hashedPassword;
   }
@@ -60,7 +60,7 @@ export class UserService {
     return { userName, token, nowTime, expireTime };
   }
 
-  async genSessionToken(user: User) {
+  private async genSessionToken(user: User) {
     try {
       const sessionValidTime = 3600;
       const token = crypto.randomBytes(32).toString('hex');
