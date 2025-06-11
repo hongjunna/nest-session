@@ -1,7 +1,10 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -14,6 +17,7 @@ import { RedisService } from './redis/redis.service';
 
 @Injectable()
 export class UserService {
+  private readonly logger: Logger = new Logger(UserService.name);
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -30,14 +34,26 @@ export class UserService {
       });
       return await this.userRepository.save(newUser);
     } catch (error) {
-      const errorCode = error.code || 'UNKNOWN_ERROR';
-      if (errorCode === '23505') {
-        throw new BadRequestException('Username or email already exists');
-      }
-      throw new InternalServerErrorException(
-        `Failed to register user: ${error.message}`,
-      );
+      this.determineRegisterErrorCode(error);
     }
+  }
+
+  private determineRegisterErrorCode(error: any): never {
+    // 여기는 에러 처리만 담당하는 곳입니다. 에러는 return 하지 말고 반드시 throw로 처리하도록 합니다.
+    const errorCode = error.code || 'UNKNOWN_ERROR';
+    if (errorCode === '23505') {
+      throw new BadRequestException('Username or email already exists');
+    }
+    this.logger.error(`Failed to register user: ${error.message}`, error.stack);
+    throw new HttpException(
+      {
+        status: 500,
+        error: 'Internal Server Error',
+        message:
+          '회원가입 중 오류가 발생했습니다. 이용에 불편을 드려 죄송합니다. 잠시 후 다시 이용해 주시거나 관리자에게 문의해 주시기 바랍니다.',
+      },
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
   }
 
   private async hashPassword(password: string): Promise<string> {
@@ -49,11 +65,13 @@ export class UserService {
     const { username, password } = loginData;
     const user = await this.userRepository.findOne({ where: { username } });
     if (!user) {
-      throw new BadRequestException('Invalid username or password');
+      throw new BadRequestException('등록되지 않은 username 입니다.');
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new BadRequestException('Invalid username or password');
+      throw new BadRequestException(
+        'username 또는 password가 일치하지 않습니다.',
+      );
     }
     const { token, nowTime, expireTime } = await this.genSessionToken(user);
     const userName = user.username;
