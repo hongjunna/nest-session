@@ -13,7 +13,7 @@ export class AppController {
 
   @Get()
   welcome(): string {
-    return 'howzit my friend! Welcome to the NestJS application!';
+    return this.appService.getHello();
   }
 
   @Post('api/register')
