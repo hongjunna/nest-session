@@ -21,9 +21,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
   async set(key: string, value: string, p0?: number) {
     if (p0 !== undefined) {
-      await this.client.set(key, value, 'EX', p0);
+      return await this.client.set(key, value, 'EX', p0);
     } else {
-      await this.client.set(key, value);
+      return await this.client.set(key, value);
     }
   }
 

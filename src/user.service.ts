@@ -14,6 +14,7 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { LoginDto } from './dto/login.dto';
 import { RedisService } from './redis/redis.service';
+import { CustomError } from './custom-error.service';
 
 @Injectable()
 export class UserService {
@@ -22,6 +23,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly redisSerivce: RedisService,
+    private readonly customError: CustomError,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<User> {
@@ -45,15 +47,7 @@ export class UserService {
       throw new BadRequestException('Username or email already exists');
     }
     this.logger.error(`Failed to register user: ${error.message}`, error.stack);
-    throw new HttpException(
-      {
-        status: 500,
-        error: 'Internal Server Error',
-        message:
-          '회원가입 중 오류가 발생했습니다. 이용에 불편을 드려 죄송합니다. 잠시 후 다시 이용해 주시거나 관리자에게 문의해 주시기 바랍니다.',
-      },
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );
+    throw this.customError.internalserverException('회원가입');
   }
 
   private async hashPassword(password: string): Promise<string> {
@@ -83,14 +77,30 @@ export class UserService {
       const sessionValidTime = 3600;
       const token = crypto.randomBytes(32).toString('hex');
       const key = `session:${token}`;
-      await this.redisSerivce.set(key, JSON.stringify(user), sessionValidTime);
+      this.setSessionTokentoRedis(key, user, sessionValidTime);
       const nowTime = new Date();
       const expireTime = new Date(nowTime.getTime() + sessionValidTime * 1000);
       return { token, nowTime, expireTime };
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Failed to generate session token',
+      throw this.customError.internalserverException('로그인');
+    }
+  }
+
+  private async setSessionTokentoRedis(
+    key: string,
+    user: User,
+    sessionValidTime: number,
+  ): Promise<void> {
+    const setSessionResult = await this.redisSerivce.set(
+      key,
+      JSON.stringify(user),
+      sessionValidTime,
+    );
+    if (!setSessionResult) {
+      this.logger.error(
+        `Failed to set session token in Redis for user ${user.username}`,
       );
+      throw this.customError.internalserverException('로그인');
     }
   }
 }

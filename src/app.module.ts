@@ -7,6 +7,7 @@ import { InitService } from './init.service';
 import { User } from './entities/user.entity';
 import { RedisService } from './redis/redis.service';
 import { UserService } from './user.service';
+import { CustomError } from './custom-error.service';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { UserService } from './user.service';
     TypeOrmModule.forFeature([User]), // Add your entities here
   ],
   controllers: [AppController],
-  providers: [AppService, InitService, UserService, RedisService],
+  providers: [AppService, InitService, UserService, RedisService, CustomError],
 })
 export class AppModule {}
