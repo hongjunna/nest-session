@@ -3,11 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { InitService } from './init.service';
-import { User } from './entities/user.entity';
-import { RedisService } from './redis/redis.service';
-import { UserService } from './user.service';
-import { CustomError } from './custom-error.service';
+import { User } from './services/user/entities/user.entity';
+import { InitService } from './services/global/init.service';
+import { UserService } from './services/user/user.service';
+import { RedisService } from './services/redis/redis.service';
+import { CustomError } from './services/global/custom-error.service';
 
 @Module({
   imports: [

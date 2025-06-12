@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CustomError {
+  static internalserverException: any;
   /**
    * 500에러 던질때 쓰십쇼
    * @param action - 에러가 발생한 액션의 이름 (예: '회원가입', '로그인' 등).
