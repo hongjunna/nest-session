@@ -1,6 +1,6 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { UserEnum } from 'src/type/user.enum';
-import { UserType } from 'src/type/user.type';
+import { UserType } from '../type/user.type';
+import { UserEnum } from '../type/user.enum';
 
 export class RegisterDto {
   @IsNotEmpty()

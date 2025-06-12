@@ -1,5 +1,5 @@
-import { UserEnum } from 'src/type/user.enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEnum } from '../type/user.enum';
 
 @Entity()
 export class User {
