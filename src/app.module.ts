@@ -23,9 +23,9 @@ import { CustomError } from './services/global/custom-error.service';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Set to false in production
+      synchronize: true, // 프로덕션 서버 배포 전 false 변경 필요
     }),
-    TypeOrmModule.forFeature([User]), // Add your entities here
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],
   providers: [AppService, InitService, UserService, RedisService, CustomError],
