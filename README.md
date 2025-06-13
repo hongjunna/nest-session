@@ -9,6 +9,7 @@ Backend Framework
 Database
 - PostgreSQL
 - TypeORM
+- Redis (세션 관리 및 캐싱용)
  
 Authentication & Security
 - bcrypt
@@ -17,13 +18,11 @@ Authentication & Security
 Validation & Transformation
 - class-validator
 - class-transformer
-
-Redis (세션 관리 등)
-- ioredis
-
+  
 기타
 - TypeScript
 - Nest CLI & Build
+- Cloud flare
 
 ## 🗒️ 구현된 기능
 - 회원가입
