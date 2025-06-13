@@ -107,11 +107,11 @@ export class UserService {
       return userInfo.sessionToken;
     } catch (error) {
       this.logger.error(
-        `Failed to parse user login status from Redis for user ${user.username}`,
+        `Failed to parse user seession from Redis for user ${user.username}`,
         error,
       );
       throw new InternalServerErrorException(
-        'Redis에서 사용자 로그인 상태를 가져오는 중 오류가 발생했습니다.',
+        '회원 서비스 시스템에서 오류가 발생했습니다. 잠시 후 다시 시도해주시거나 관리자에게 문의해 주세요.',
       );
     }
   }
