@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module';
 import { InitService } from './global-service/init.service';
 import { CustomError } from './global-service/custom-error.service';
 import { RedisModule } from './redis/redis.module';
+import { SimpleService } from './simple/simple.service';
+import { SimpleModule } from './simple/simple.module';
 
 @Module({
   imports: [
@@ -27,8 +29,9 @@ import { RedisModule } from './redis/redis.module';
     }),
     UserModule,
     RedisModule,
+    SimpleModule,
   ],
   controllers: [AppController],
-  providers: [AppService, InitService, CustomError],
+  providers: [AppService, InitService, CustomError, SimpleService],
 })
 export class AppModule {}
