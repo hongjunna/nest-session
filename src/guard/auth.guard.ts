@@ -10,10 +10,8 @@ export class AuthGuard implements CanActivate {
     if (!token || typeof token !== 'string') {
       return false;
     }
-
     const key = `session:token:${token}`;
     const userData = await this.redisService.get(key);
-
     if (!userData) {
       return false;
     }
