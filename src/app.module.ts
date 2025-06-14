@@ -3,14 +3,17 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './services/user/entities/user.entity';
-import { InitService } from './services/global/init.service';
-import { UserService } from './services/user/user.service';
-import { RedisService } from './services/redis/redis.service';
-import { CustomError } from './services/global/custom-error.service';
+import { UserService } from './user/user.service';
+import { UserModule } from './user/user.module';
+import UserController from './user/user.controller';
+import { User } from './user/entities/user.entity';
+import { InitService } from './global-service/init.service';
+import { RedisService } from './redis/redis.service';
+import { CustomError } from './global-service/custom-error.service';
 
 @Module({
   imports: [
+    UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
@@ -26,8 +29,9 @@ import { CustomError } from './services/global/custom-error.service';
       synchronize: true, // 프로덕션 서버 배포 전 false 변경 필요
     }),
     TypeOrmModule.forFeature([User]),
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService, InitService, UserService, RedisService, CustomError],
+  providers: [AppService, InitService, RedisService, CustomError],
 })
 export class AppModule {}

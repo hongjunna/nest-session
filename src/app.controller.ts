@@ -1,10 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
-import { UserService } from './services/user/user.service';
-import { RegisterDto } from './services/user/dto/register.dto';
-import { LoginDto } from './services/user/dto/login.dto';
+import { UserService } from './user/user.service';
 
-@Controller()
+@Controller('/api')
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -14,27 +12,5 @@ export class AppController {
   @Get()
   welcome(): string {
     return this.appService.getHello();
-  }
-
-  @Post('api/register')
-  async registerUser(@Body() userData: RegisterDto) {
-    const user = await this.userService.register(userData);
-    return {
-      message: `User ${user.username} registered successfully!`,
-      id: user.id,
-    };
-  }
-
-  @Post('api/login')
-  async loginUser(@Body() loginData: LoginDto) {
-    const { userName, token, nowTime, expireTime } =
-      await this.userService.login(loginData);
-    return {
-      message: `User ${userName} login successfully!`,
-      userName,
-      token,
-      nowTime,
-      expireTime,
-    };
   }
 }

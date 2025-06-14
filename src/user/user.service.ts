@@ -13,8 +13,8 @@ import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { LoginDto } from './dto/login.dto';
-import { RedisService } from '../redis/redis.service';
-import { CustomError } from '../global/custom-error.service';
+import { RedisService } from 'src/redis/redis.service';
+import { CustomError } from 'src/global-service/custom-error.service';
 
 @Injectable()
 export class UserService {
