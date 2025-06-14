@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { OnModuleInit, OnModuleDestroy, Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 
 @Injectable()
