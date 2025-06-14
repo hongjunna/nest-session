@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { InitService } from './global-service/init.service';
-import { RedisService } from './redis/redis.service';
 import { CustomError } from './global-service/custom-error.service';
 import { RedisModule } from './redis/redis.module';
 
